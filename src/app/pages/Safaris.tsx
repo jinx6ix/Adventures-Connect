@@ -1,56 +1,103 @@
 // src/pages/Safaris.tsx
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useParams } from 'react-router-dom'
-import { motion } from 'motion/react'
+import { motion, AnimatePresence } from 'motion/react'
 import { loadSafaris } from '../data/loadSafaris'
-import type { Safari } from '../..//types/safari'
-import { Clock, DollarSign, ArrowRight, Filter, X } from 'lucide-react'
+import type { Safari } from '../types/safari'
+import { Clock, DollarSign, ArrowRight, Filter, X, Search } from 'lucide-react'
 
-// Load once at module level — no async needed since eager:true is synchronous
 const allSafaris = loadSafaris()
 
 export function Safaris() {
+  const [query, setQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState('all')
   const [selectedBudget, setSelectedBudget] = useState('all')
   const [selectedExperience, setSelectedExperience] = useState('all')
   const [showFilters, setShowFilters] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const searchRef = useRef<HTMLDivElement>(null)
 
-  // Derive filter options directly from loaded data so they stay in sync automatically
   const countries = useMemo(
-    () => Array.from(new Set(allSafaris.map(s => s.country))).sort(),
+    () => Array.from(new Set(allSafaris.map(s => s.country).filter(Boolean))).sort(),
     []
   )
   const categories = useMemo(
-    () => Array.from(new Set(allSafaris.map(s => s.category))).sort(),
+    () => Array.from(new Set(allSafaris.map(s => s.category).filter(Boolean))).sort(),
     []
   )
   const experiences = useMemo(
-    () => Array.from(new Set(allSafaris.map(s => s.experience))).sort(),
+    () => Array.from(new Set(allSafaris.map(s => s.experience).filter(Boolean))).sort(),
     []
   )
 
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
+        setShowSuggestions(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Suggestions: safaris whose title/country/highlights match the query
+  const suggestions = useMemo(() => {
+    if (query.trim().length < 2) return []
+    const q = query.toLowerCase()
+    return allSafaris
+      .filter(s =>
+        s.title?.toLowerCase().includes(q) ||
+        s.country?.toLowerCase().includes(q) ||
+        s.description?.toLowerCase().includes(q) ||
+        s.highlights?.some(h => h.toLowerCase().includes(q))
+      )
+      .slice(0, 5)
+  }, [query])
+
+  // Main filtered + searched list
   const filteredSafaris = useMemo(() => {
+    const q = query.trim().toLowerCase()
     return allSafaris.filter(safari => {
-      if (selectedCountry !== 'all' && safari.country.toLowerCase() !== selectedCountry) return false
+      // Search match
+      if (q.length >= 2) {
+        const matches =
+          safari.title?.toLowerCase().includes(q) ||
+          safari.country?.toLowerCase().includes(q) ||
+          safari.description?.toLowerCase().includes(q) ||
+          safari.highlights?.some(h => h.toLowerCase().includes(q))
+        if (!matches) return false
+      }
+      // Dropdown filters
+      if (selectedCountry !== 'all' && safari.country?.toLowerCase() !== selectedCountry) return false
       if (selectedBudget !== 'all' && safari.category !== selectedBudget) return false
       if (selectedExperience !== 'all' && safari.experience !== selectedExperience) return false
       return true
     })
-  }, [selectedCountry, selectedBudget, selectedExperience])
+  }, [query, selectedCountry, selectedBudget, selectedExperience])
 
-  const isFiltered = selectedCountry !== 'all' || selectedBudget !== 'all' || selectedExperience !== 'all'
+  const isFiltered =
+    query.trim().length >= 2 ||
+    selectedCountry !== 'all' ||
+    selectedBudget !== 'all' ||
+    selectedExperience !== 'all'
 
-  function clearFilters() {
+  function clearAll() {
+    setQuery('')
     setSelectedCountry('all')
     setSelectedBudget('all')
     setSelectedExperience('all')
   }
 
+  function applySearch(title: string) {
+    setQuery(title)
+    setShowSuggestions(false)
+  }
+
   return (
     <div>
-      {/* Hero */}
-      <div className="relative h-[300px] md:h-[400px] bg-gradient-to-r from-[var(--safari-brown-dark)] to-[var(--safari-brown)]">
+      {/* Hero with search bar embedded */}
+      <div className="relative h-[360px] md:h-[440px] bg-gradient-to-r from-[var(--safari-brown-dark)] to-[var(--safari-brown)]">
         <div
           className="absolute inset-0 opacity-20"
           style={{
@@ -70,9 +117,75 @@ export function Safaris() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
                 Our Safari Packages
               </h1>
-              <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
+              <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
                 Choose from our carefully curated safari experiences across East Africa
               </p>
+
+              {/* Search bar */}
+              <div className="max-w-2xl mx-auto" ref={searchRef}>
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={e => {
+                      setQuery(e.target.value)
+                      setShowSuggestions(true)
+                    }}
+                    onFocus={() => setShowSuggestions(true)}
+                    placeholder="Search by destination, park, or experience..."
+                    className="w-full pl-12 pr-12 py-4 rounded-xl text-gray-800 text-base shadow-xl focus:outline-none focus:ring-2 focus:ring-[var(--safari-gold)]"
+                  />
+                  {query && (
+                    <button
+                      onClick={() => { setQuery(''); setShowSuggestions(false) }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      aria-label="Clear search"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  )}
+
+                  {/* Autocomplete suggestions dropdown */}
+                  <AnimatePresence>
+                    {showSuggestions && suggestions.length > 0 && (
+                      <motion.ul
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl overflow-hidden z-50 text-left"
+                      >
+                        {suggestions.map(s => (
+                          <li key={s.id}>
+                            <button
+                              onMouseDown={() => applySearch(s.title)}
+                              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-[var(--safari-cream)] transition-colors"
+                            >
+                              <img
+                                src={s.image}
+                                alt={s.title}
+                                className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                              />
+                              <div className="text-left">
+                                <p className="text-sm font-semibold text-[var(--safari-brown-dark)]">
+                                  {s.title}
+                                </p>
+                                <p className="text-xs text-gray-500 capitalize">
+                                  {s.country} · {s.duration}
+                                </p>
+                              </div>
+                              <span className="ml-auto text-xs font-bold text-[var(--safari-gold)]">
+                                ${s.price?.toLocaleString()}
+                              </span>
+                            </button>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
@@ -98,17 +211,17 @@ export function Safaris() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar filters */}
+            {/* Sidebar */}
             <div className={`lg:w-64 flex-shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
               <div className="bg-[var(--safari-cream)] p-6 rounded-xl sticky top-24">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-xl font-bold text-[var(--safari-brown-dark)]">Filter Safaris</h3>
                   {isFiltered && (
                     <button
-                      onClick={clearFilters}
+                      onClick={clearAll}
                       className="text-xs text-gray-500 hover:text-[var(--safari-gold)] flex items-center gap-1"
                     >
-                      <X className="w-3 h-3" /> Clear
+                      <X className="w-3 h-3" /> Clear all
                     </button>
                   )}
                 </div>
@@ -117,27 +230,25 @@ export function Safaris() {
                   label="By Country"
                   value={selectedCountry}
                   onChange={setSelectedCountry}
-                  options={countries.map(c => ({
+                  options={countries.filter(Boolean).map(c => ({
                     value: c.toLowerCase(),
                     label: c,
                   }))}
                 />
-
                 <FilterSelect
                   label="By Budget"
                   value={selectedBudget}
                   onChange={setSelectedBudget}
-                  options={categories.map(c => ({
+                  options={categories.filter(Boolean).map(c => ({
                     value: c,
                     label: c.charAt(0).toUpperCase() + c.slice(1),
                   }))}
                 />
-
                 <FilterSelect
                   label="By Experience"
                   value={selectedExperience}
                   onChange={setSelectedExperience}
-                  options={experiences.map(e => ({
+                  options={experiences.filter(Boolean).map(e => ({
                     value: e,
                     label: e.charAt(0).toUpperCase() + e.slice(1),
                   }))}
@@ -147,13 +258,19 @@ export function Safaris() {
 
             {/* Safari grid */}
             <div className="flex-1">
+              {/* Result count + active chips */}
               <div className="mb-6 flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">
                   Showing{' '}
                   <span className="font-bold text-[var(--safari-gold)]">{filteredSafaris.length}</span>{' '}
                   safari{filteredSafaris.length !== 1 ? 's' : ''}
+                  {query.trim().length >= 2 && (
+                    <span className="text-gray-400"> for "{query}"</span>
+                  )}
                 </p>
-                {/* Active filter chips */}
+                {query.trim().length >= 2 && (
+                  <FilterChip label={`"${query}"`} onRemove={() => setQuery('')} />
+                )}
                 {selectedCountry !== 'all' && (
                   <FilterChip label={selectedCountry} onRemove={() => setSelectedCountry('all')} />
                 )}
@@ -167,18 +284,22 @@ export function Safaris() {
 
               {filteredSafaris.length === 0 ? (
                 <div className="text-center py-16">
-                  <p className="text-gray-500 text-lg mb-4">No safaris match your selected filters.</p>
+                  <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 text-lg mb-2">No safaris found.</p>
+                  <p className="text-gray-400 text-sm mb-6">
+                    Try a different search term or clear your filters.
+                  </p>
                   <button
-                    onClick={clearFilters}
+                    onClick={clearAll}
                     className="text-[var(--safari-gold)] hover:underline font-semibold"
                   >
-                    Clear all filters
+                    Clear everything
                   </button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredSafaris.map((safari, index) => (
-                    <SafariCard key={safari.id} safari={safari} index={index} />
+                    <SafariCard key={safari.id} safari={safari} index={index} query={query} />
                   ))}
                 </div>
               )}
@@ -233,7 +354,27 @@ function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }
   )
 }
 
-function SafariCard({ safari, index }: { safari: Safari; index: number }) {
+/** Highlights matching query text in a string */
+function Highlight({ text, query }: { text: string; query: string }) {
+  if (!query || query.trim().length < 2) return <>{text}</>
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  const parts = text.split(regex)
+  return (
+    <>
+      {parts.map((part, i) =>
+        regex.test(part) ? (
+          <mark key={i} className="bg-[var(--safari-gold)]/20 text-[var(--safari-brown-dark)] rounded px-0.5">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  )
+}
+
+function SafariCard({ safari, index, query }: { safari: Safari; index: number; query: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -245,7 +386,6 @@ function SafariCard({ safari, index }: { safari: Safari; index: number }) {
         to={`/safari/${safari.id}`}
         className="group block bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full"
       >
-        {/* Image */}
         <div className="aspect-[4/3] relative overflow-hidden">
           <img
             src={safari.image}
@@ -254,21 +394,26 @@ function SafariCard({ safari, index }: { safari: Safari; index: number }) {
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <span className="bg-[var(--safari-gold)] text-white px-3 py-1 rounded-full text-xs font-semibold capitalize">
-              {safari.category}
-            </span>
-            <span className="bg-white/90 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold capitalize">
-              {safari.country}
-            </span>
+            {safari.category && (
+              <span className="bg-[var(--safari-gold)] text-white px-3 py-1 rounded-full text-xs font-semibold capitalize">
+                {safari.category}
+              </span>
+            )}
+            {safari.country && (
+              <span className="bg-white/90 text-gray-700 px-3 py-1 rounded-full text-xs font-semibold capitalize">
+                {safari.country}
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Body */}
         <div className="p-6">
           <h3 className="text-xl font-bold text-[var(--safari-brown-dark)] mb-2 group-hover:text-[var(--safari-gold)] transition-colors">
-            {safari.title}
+            <Highlight text={safari.title} query={query} />
           </h3>
-          <p className="text-gray-600 mb-4 line-clamp-2 text-sm">{safari.description}</p>
+          <p className="text-gray-600 mb-4 line-clamp-2 text-sm">
+            <Highlight text={safari.description || ''} query={query} />
+          </p>
 
           <div className="flex items-center justify-between mb-4 pb-4 border-b border-gray-200">
             <div className="flex items-center gap-2 text-gray-600 text-sm">
@@ -277,7 +422,7 @@ function SafariCard({ safari, index }: { safari: Safari; index: number }) {
             </div>
             <div className="flex items-center gap-1 text-[var(--safari-gold)] font-bold text-sm">
               <DollarSign className="w-4 h-4" />
-              <span>From ${safari.price.toLocaleString()}</span>
+              <span>From ${safari.price?.toLocaleString()}</span>
             </div>
           </div>
 
