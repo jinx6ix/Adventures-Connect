@@ -1,60 +1,99 @@
 // src/data/loadSafaris.ts
-//
-// Auto-discovers ALL .json files inside src/data/json/**
-// Organise by country like this:
-//   src/data/json/kenya/best-kenya-safari-south.json
-//   src/data/json/tanzania/serengeti-classic.json
-//
-// Adding a new JSON file to any country folder automatically
-// makes it appear in the site — no code changes needed.
 
 import type { Safari } from '../../types/safari'
 
-// Vite's import.meta.glob must use a string literal — the ** glob
-// handles all subfolders (countries) recursively.
-const safariModules = import.meta.glob<{ default: Safari }>(
-  './json/**/*.json',
-  { eager: true }
-)
+/**
+ * Vite automatically discovers all JSON safari files
+ * inside src/data/json/** folders.
+ */
+const safariModules = import.meta.glob('./json/**/*.json', {
+  eager: true
+}) as Record<string, { default?: Safari }>
 
 /**
- * Returns all safaris loaded from the json/** folder.
- * Results are sorted by price ascending by default.
+ * Internal cached safari list
  */
-export function loadSafaris(): Safari[] {
-  const safaris: Safari[] = []
+const safaris: Safari[] = []
 
+/**
+ * Load safaris safely.
+ * If a file is corrupt or missing fields it will be skipped.
+ */
+function initSafaris() {
   for (const path in safariModules) {
-    const mod = safariModules[path]
-    if (mod?.default) {
-      safaris.push(mod.default)
+    try {
+      const mod = safariModules[path]
+
+      if (!mod || !mod.default) {
+        console.warn(`⚠️ Safari file skipped (no default export): ${path}`)
+        continue
+      }
+
+      const safari = mod.default
+
+      // Basic validation
+      if (
+        !safari.id ||
+        !safari.title ||
+        !safari.country ||
+        typeof safari.price !== 'number'
+      ) {
+        console.warn(`⚠️ Invalid safari data skipped: ${path}`)
+        continue
+      }
+
+      safaris.push(safari)
+
+    } catch (error) {
+      console.warn(`⚠️ Failed to load safari JSON: ${path}`, error)
     }
   }
 
-  // Stable sort by price so UI order is predictable
-  return safaris.sort((a, b) => a.price - b.price)
+  // Sort once after loading
+  safaris.sort((a, b) => a.price - b.price)
+}
+
+// initialize once
+initSafaris()
+
+/**
+ * Return all safaris
+ */
+export function loadSafaris(): Safari[] {
+  return safaris
 }
 
 /**
- * Returns a single safari by id, or undefined if not found.
+ * Get safari by id
  */
 export function getSafariById(id: string): Safari | undefined {
-  return loadSafaris().find(s => s.id === id)
+  return safaris.find(s => s.id === id)
 }
 
 /**
- * Returns all unique countries found across the loaded safaris.
- * Useful for building country-filter dropdowns.
+ * Filter by country
+ */
+export function getSafarisByCountry(country: string): Safari[] {
+  return safaris.filter(s => s.country === country)
+}
+
+/**
+ * Filter by category
+ */
+export function getSafarisByCategory(category: string): Safari[] {
+  return safaris.filter(s => s.category === category)
+}
+
+/**
+ * Get unique countries
  */
 export function getCountries(): string[] {
-  const all = loadSafaris().map(s => s.country)
-  return Array.from(new Set(all)).sort()
+  return Array.from(new Set(safaris.map(s => s.country))).sort()
 }
 
 /**
- * Returns all unique categories (luxury / budget / mid-range etc.)
+ * Get unique categories
  */
 export function getCategories(): string[] {
-  const all = loadSafaris().map(s => s.category)
-  return Array.from(new Set(all)).sort()
+  return Array.from(new Set(safaris.map(s => s.category))).sort()
 }

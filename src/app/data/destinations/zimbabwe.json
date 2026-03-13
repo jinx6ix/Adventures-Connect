@@ -1,0 +1,15 @@
+{
+  "id": "zimbabwe",
+  "name": "Zimbabwe",
+  "country": "Zimbabwe",
+  "flag": "🇿🇼",
+  "image": "/images/destinations/zimbabwe.jpg",
+  "description": "A land of dramatic landscapes, rich wildlife, and the thundering Victoria Falls — Zimbabwe is a true African gem.",
+  "highlights": [
+    "Victoria Falls",
+    "Hwange National Park",
+    "Matobo Hills",
+    "Great Zimbabwe Ruins",
+    "Lake Kariba"
+  ]
+}

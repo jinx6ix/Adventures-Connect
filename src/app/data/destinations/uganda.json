@@ -1,0 +1,15 @@
+{
+  "id": "uganda",
+  "name": "Uganda",
+  "country": "Uganda",
+  "flag": "🇺🇬",
+  "image": "/images/destinations/uganda.jpg",
+  "description": "The Pearl of Africa, Uganda is home to lush landscapes, mountain gorillas, and the source of the Nile River.",
+  "highlights": [
+    "Bwindi Impenetrable Forest",
+    "Murchison Falls",
+    "Queen Elizabeth National Park",
+    "Kampala",
+    "Lake Victoria"
+  ]
+}
