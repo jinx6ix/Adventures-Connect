@@ -5,7 +5,7 @@
   "duration": "13 Days / 12 Nights",
   "price": 5695,
   "description": "A luxury Kenya safari combining northern wildlife at Samburu, Ol Pejeta, central parks, Maasai Mara, and the relaxing beaches of Diani. Ideal for travelers wanting both thrill and chill.",
-  "image": "/images/safaris/kenya-north-south.jpg",
+  "image": "https://www.kenyawildlifetours.com/wp-content/uploads/2023/10/white-rhino-translocation.jpg",
   "category": "luxury",
   "experience": "wildlife & beach",
   "highlights": [
@@ -109,9 +109,9 @@
     "Swahili Beach Resort & SPA (4 nights)"
   ],
   "gallery": [
-    "/images/safaris/kenya-north-south1.jpg",
-    "/images/safaris/kenya-north-south2.jpg",
-    "/images/safaris/kenya-north-south3.jpg"
+    "https://www.aberdarenationalparks.com/wp-content/uploads/2023/03/lake-nakuru-national-park.jpg",
+    "https://marcopolosafaris.com/wp-content/uploads/2025/10/02DIAN-IM0002-diani-beach-1560-960x636.jpg",
+    "https://samburunationalreservekenya.com/wp-content/uploads/2022/07/masai-2-870x450-1.jpg"
   ],
   "travelInfo": {
     "clothes": "Bring mosquito repellent, sunscreen, hat, sunglasses, malaria medication. Early mornings and evenings can be cool; a sweater and trousers/jeans recommended.",

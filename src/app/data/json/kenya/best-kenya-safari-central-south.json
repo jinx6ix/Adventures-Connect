@@ -3,9 +3,9 @@
   "title": "Best of Kenya Safari – Central and South Edition",
   "country": "Kenya",
   "duration": "5 Days / 4 Nights",
-  "price": 1980,
+  "price": 1890,
   "description": "Kenya pioneered the safari experience and remains a country of striking contrasts, from snow-capped mountains to lush tropical forests and golden beaches. This safari explores the central highlands, Lake Nakuru, and the Maasai Mara, offering iconic wildlife experiences and opportunities to witness the Great Wildebeest Migration between July and October.",
-  "image": "/images/safaris/kenya-central-south.jpg",
+  "image": "https://africanspicesafaris.com/wp-content/uploads/2020/06/ark-tree-lodge-hotel-1200x720.jpg",
   "category": "luxury",
   "experience": "wildlife",
   "highlights": [
@@ -56,14 +56,14 @@
   ],
   "pricing": {
     "lowSeason": {
-      "solo": 1980,
-      "twoPersons": 1980,
-      "group": 1980
+      "solo": 1890,
+      "twoPersons": 1890,
+      "group": 1890
     },
     "highSeason": {
-      "solo": 1980,
-      "twoPersons": 1980,
-      "group": 1980
+      "solo": 2350,
+      "twoPersons": 2350,
+      "group": 2350
     }
   },
   "accommodation": [
@@ -73,9 +73,9 @@
     "Ashnil Mara Camp – Maasai Mara (1 night)"
   ],
   "gallery": [
-    "/images/safaris/the-ark.jpg",
-    "/images/safaris/lake-nakuru.jpg",
-    "/images/safaris/maasai-mara.jpg"
+    "https://cheetahsafaris.com/wp-content/uploads/2024/09/13-the-ark-kenya.webp",
+    "https://www.wildlifeworldwide.com/images/galleries/africa_kenya_lake_nakuru_gallery_flamingos.jpg",
+    "https://s3.amazonaws.com/cdn.micato.com/wp-content/uploads/2018/09/07223907/maasai-mara.jpg"
   ],
   "travelInfo": {
     "clothes": "Bring mosquito repellent, sunscreen, a hat and sunglasses. Early mornings and evenings can be cool in the highlands, so a sweater or light jacket is recommended.",

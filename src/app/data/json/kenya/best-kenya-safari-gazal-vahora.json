@@ -5,7 +5,7 @@
   "duration": "5 Days / 4 Nights",
   "price": 2000,
   "description": "This short but immersive safari explores central and southern Kenya, from the Aberdares to Lake Nakuru and Maasai Mara. Guests enjoy iconic wildlife, stunning landscapes, and optional game drives. The Great Wildebeest Migration can be witnessed from July to October in the Maasai Mara.",
-  "image": "/images/safaris/kenya-gazal-vahora.jpg",
+  "image": "https://media-cdn.tripadvisor.com/media/photo-s/2e/db/5b/d5/luxury-suite-verandah.jpg",
   "category": "luxury",
   "experience": "wildlife",
   "highlights": [
@@ -77,9 +77,9 @@
     "Mara Elatia Camp – Maasai Mara (2 nights)"
   ],
   "gallery": [
-    "/images/safaris/the-ark.jpg",
-    "/images/safaris/lake-nakuru.jpg",
-    "/images/safaris/maasai-mara.jpg"
+    "https://primateworldsafaris.com/wp-content/uploads/2023/02/the-ark-lodge.jpg",
+    "https://www.kws.go.ke/sites/default/files/2019-11/parks/Lake%20Nakuru/Lake-Nakuru-5.jpg",
+    "https://tour.epesicloud.com/app/storage/uploads/37/1741240706_94_masai_mara.jpg"
   ],
   "travelInfo": {
     "clothes": "Bring mosquito repellent, sunscreen, hat, sunglasses, and malaria medication. Highlands can be cool in mornings and evenings, so a sweater and long trousers/jeans are recommended.",
