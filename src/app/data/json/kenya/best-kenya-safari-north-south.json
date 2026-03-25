@@ -3,7 +3,7 @@
   "title": "Best of Kenya Safari – North and South Edition",
   "country": "Kenya",
   "duration": "15 Days / 14 Nights",
-  "price": 4180,
+  "price": 6230,
   "description": "This extensive safari explores northern and southern Kenya, from Ol Pejeta and Samburu to the Aberdares, Lake Naivasha, Maasai Mara, Amboseli, and finally the Kenyan coast. Guests experience iconic wildlife, cultural visits, and optional excursions, including the Great Wildebeest Migration between July and October.",
   "image": "https://jewelsafaris.com/wp-content/uploads/2019/09/Ol-Pejeta-Chimpanzee-Sanctuary-1.jpg",
   "category": "luxury",
@@ -95,15 +95,15 @@
     }
   ],
   "included": [
-    "Accommodation on full board in safari lodges, half board at Serena Beach Hotel, bed & breakfast at Tamarind Tree Hotel",
+    "Accommodation on full board in safari lodges, half board at Swahili Beach resort, bed & breakfast at Tamarind Tree Hotel",
     "Exclusive use of safari-equipped Landcruiser (not shared)",
     "Unlimited game drives while on safari",
-    "Professional driver guide and pre-tour briefing",
+    "Services of a English-speaking professional driver guide and pre-tour briefing",
     "All park entrance fees and relevant taxes",
-    "One-way air ticket Mombasa to Nairobi (Skyward Express)",
-    "First-class train ticket Emali to Mombasa (Madaraka Express)",
-    "Return transfers in Mombasa",
-    "Travel insurance within Kenya"
+    "First-class train ticket (SGR)",
+    "Return transfers in Mombasa and Diani",
+    "Excursions into wasiai ilands and Chale Island",
+    "One-way air ticket Mombasa to Nairobi (SafariLink)"
   ],
   "notIncluded": [
     "Tips and gratuities",
@@ -113,14 +113,14 @@
   ],
   "pricing": {
     "lowSeason": {
-      "solo": 4180,
-      "twoPersons": 4180,
-      "group": 4180
+      "solo": 5470,
+      "twoPersons": 6230,
+      "group": 5790
     },
     "highSeason": {
-      "solo": 4180,
-      "twoPersons": 4180,
-      "group": 4180
+      "solo": 5470,
+      "twoPersons": 6230,
+      "group": 5790
     }
   },
   "accommodation": [
@@ -129,9 +129,10 @@
     "Samburu Intrepids Camp – Samburu (2 nights)",
     "The Ark Lodge – Aberdares (1 night)",
     "Lake Naivasha Sopa Lodge – Lake Naivasha (1 night)",
-    "Ashnil Mara Camp – Maasai Mara (2 nights)",
-    "Amboseli Serena Lodge – Amboseli (2 nights)",
-    "Serena Beach Hotel & Spa – Mombasa (5 nights)"
+    "Ol Kinyei Mara Camp – Maasai Mara (2 nights)",
+    "Amboseli Serena Lodge – Amboseli (1 nights)",
+    "Kilangani serena (1 nights)",
+    "Swahili Beach resort – Mombasa (3 nights)"
   ],
   "gallery": [
     "/images/safaris/tamarind-tree.jpg",

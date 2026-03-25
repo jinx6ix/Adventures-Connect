@@ -2,7 +2,7 @@
   "id": "best-maasai-mara-diani",
   "title": "The Best of the Maasai Mara and Diani",
   "country": "Kenya",
-  "duration": "8 Days / 7 Nights",
+  "duration": "7 Days / 6 Nights",
   "price": 2470,
   "description": "Combine Kenya’s iconic Maasai Mara wildlife with the pristine beaches of Diani. Witness the Great Wildebeest Migration (July–October), enjoy guided game drives, and relax on Africa’s finest coastal resorts.",
   "image": "https://cdn.atrsafari.com/cdn/05explore/locations-and-lodges/africa/kenya/mara/triangle/angama-mara/0/stills/00page/01KANG-IM0001-angama-mara-1920.jpg",
@@ -59,8 +59,8 @@
     }
   ],
   "included": [
-    "Three nights accommodation in Maasai Mara on full board",
-    "Four nights accommodation in Diani Beach on half board (The Maji or Swahili Beach Resort & SPA) or full board (Afro Chic)",
+    "Three nights accommodation in Governor camp Maasai Mara",
+    "Three nights accommodation in Diani Beach on half board (The Maji or Swahili Beach Resort & SPA) or full board (Afro Chic)",
     "Flights: Wilson – Maasai Mara – Wilson, Wilson – Diani – Wilson on Safarilink or Governors Air",
     "Professional driver guide and pre-tour briefing",
     "Return airstrip transfers in Maasai Mara and Diani",
@@ -77,14 +77,14 @@
   ],
   "pricing": {
     "midSeason": {
-      "angama-afrochic": 5495,
-      "littlegovernors-themaji": 3655,
-      "ashnil-swahili": 2470
+      "1st-Apr-30th-Jun": 4470,
+      "01-nov-20-dec": 4770,
+      "1st-jun-31-oct": 6030
     },
     "peakSeason": {
-      "angama-afrochic": 8150,
-      "littlegovernors-themaji": 4810,
-      "ashnil-swahili": 3040
+       "1st-Apr-30th-Jun": 4470,
+      "01-nov-20-dec": 4770,
+      "1st-jun-31-oct": 6030
     }
   },
   "accommodation": [
